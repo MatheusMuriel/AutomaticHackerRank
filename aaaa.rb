@@ -34,10 +34,7 @@ end
 def get_informations(url)
     # Busca e faz um parser nas matatags da url
     ogp = Ogpr.fetch(url)
-
-    # Abre a metatag OpenGraph
-    #og = ogp.open_graph
-    titulo = ogp.title
+    titulo = ogp.title.gsub(/(\s\|\sHackerRank)$|\s/, '')
     p titulo
 end
 
