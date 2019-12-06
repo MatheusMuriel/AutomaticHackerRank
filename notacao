@@ -1,0 +1,26 @@
+Ruby zip
+
+https://stackoverflow.com/questions/33173266/ruby-download-zip-file-and-extract
+
+
+
+
+TestesCases
+URL normal -> https://www.hackerrank.com/challenges/counting-valleys/problem
+URL testes -> https://www.hackerrank.com/rest/contests/master/challenges/counting-valleys/download_testcases
+
+
+
+https://www.hackerrank.com/rest/contests/master/challenges/electronics-shop/download_testcases
+
+
+REGEX
+^(https:\/\/www\.hackerrank\.com\/challenges\/){1}([a-zA-Z]|[0-9])+(\-([a-zA-Z]|[0-9])+)*\/(problem$)?
+
+https://www.hackerrank.com/challenges/counting-valleys/problem
+https://google.com/
+https://www.hackerrank.com/challenges/counting-valleys/
+https://drive.google.com/drive/my-drive
+https://www.hackerrank.com/challenges/electronics-shop/problem
+https://github.com/MatheusMuriel/Djanguladora
+https://www.hackerrank.com/challenges/electronics-shop/
