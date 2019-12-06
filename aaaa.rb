@@ -62,27 +62,29 @@ def get_code
     code_file = File.join(Dir.pwd, @nome_desafio, @nome_desafio + '.rb')
     FileUtils.touch code_file
 
+    # Decodifica os templates do desafio
     doc = Nokogiri::HTML.parse(@html_page)
     initial_data_encoded = doc.at_css("script#initialData")
     initial_data_encoded = initial_data_encoded.to_str.gsub(/\n|\s/,'')
-
-    #p initial_data_encoded
 
     initial_data = CGI::unescape(initial_data_encoded)
 
     json_init_data = JSON.parse(initial_data)
     
-    #community > challenges > challenge
     challenge = json_init_data['community']['challenges']['challenge']
 
-    #master/counting-valleys > detail > ruby_template / ruby_template_head / ruby_template_tail
     detail = challenge['master/'+@url_name]['detail']
 
     template = detail['ruby_template']
-    template_head  = detail['ruby_template_head']
+    template_head  = detail['ruby_template_head'].gsub('#!/bin/ruby', '#!/bin/ruby' + "\n\n" + "# " + @url)
     template_tail = detail['ruby_template_tail']
 
-    p template_tail
+    #Grava os templates no arquivo
+    File.open(code_file, 'w') { |file| 
+        file.write(template_head)
+        file.write(template)
+        file.write(template_tail)
+    }
 end
 
 get_code()
