@@ -1,7 +1,9 @@
 require 'httparty'
 require 'zip'
-require "ogpr"
+require 'ogpr'
 require 'nokogiri'
+require 'cgi'
+require 'json'
 
 regex_url = /^(http(s)?:\/\/www\.hackerrank\.com\/challenges\/){1}([a-zA-Z]|[0-9])+(\-([a-zA-Z]|[0-9])+)*\/(problem$)?/
 
@@ -17,6 +19,7 @@ if !@url.match(regex_url)
 end
 
 @url = @url.gsub(/\s|\n/, '').gsub(/\/problem$|\/problem\/$/, '')
+@url_name = @url.split("/")[4]
 
 @html_page = HTTParty.get(@url)
 
@@ -63,7 +66,23 @@ def get_code
     initial_data_encoded = doc.at_css("script#initialData")
     initial_data_encoded = initial_data_encoded.to_str.gsub(/\n|\s/,'')
 
-    p initial_data_encoded
+    #p initial_data_encoded
+
+    initial_data = CGI::unescape(initial_data_encoded)
+
+    json_init_data = JSON.parse(initial_data)
+    
+    #community > challenges > challenge
+    challenge = json_init_data['community']['challenges']['challenge']
+
+    #master/counting-valleys > detail > ruby_template / ruby_template_head / ruby_template_tail
+    detail = challenge['master/'+@url_name]['detail']
+
+    template = detail['ruby_template']
+    template_head  = detail['ruby_template_head']
+    template_tail = detail['ruby_template_tail']
+
+    p template_tail
 end
 
 get_code()
