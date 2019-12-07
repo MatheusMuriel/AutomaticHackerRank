@@ -7,9 +7,9 @@ require 'json'
 
 regex_url = /^(http(s)?:\/\/www\.hackerrank\.com\/challenges\/){1}([a-zA-Z]|[0-9])+(\-([a-zA-Z]|[0-9])+)*\/(problem$)?/
 
-#puts "Bem vindo ao automatizador de desafios do HackerRank :D"
+puts "Bem vindo ao automatizador de desafios do HackerRank :D"
 
-#puts "Qual é o link do desafio que vc deseja?"
+puts "Qual é o link do desafio que vc deseja?"
 
 @url = gets
 
@@ -54,7 +54,7 @@ def get_testcase
     puts "OK \n\n"
 end
 
-#get_testcase()
+get_testcase()
 
 #Cria o arquivo de codigo
 def get_code
@@ -79,12 +79,21 @@ def get_code
     template_head  = detail['ruby_template_head'].gsub('#!/bin/ruby', '#!/bin/ruby' + "\n\n" + "# " + @url)
     template_tail = detail['ruby_template_tail']
 
+    template_tail.slice! "fptr = File.open(ENV['OUTPUT_PATH'], 'w')\n\n"
+    template_tail = template_tail.gsub(/(fptr\.write)\s.*/, '')
+    template_tail = template_tail.gsub(/(fptr\.close\(\))/, 'puts result')
+    template_tail = template_tail.gsub(/\n\n\n\n/, "\n")
+
     #Grava os templates no arquivo
-    File.open(code_file, 'w') { |file| 
+    File.open(code_file, 'w') { |file|
         file.write(template_head)
         file.write(template)
         file.write(template_tail)
     }
+
+    puts "OK\n\n"
 end
 
 get_code()
+
+puts "Prontinho, bora codar! :D"
